@@ -41,23 +41,23 @@
     
 vector<vector<int>> buildMatrix(int n, vector<vector<int>>& row, vector<vector<int>>& col) {
     
-    vector<int> rowOrder=kahn(n,row); //rowOrder ye btayega kaunsi row me kaunsa ele ayega
-    vector<int> colOrder=kahn(n,col); //colOrder ye btayega kaunsi col me kaunsa ele ayega
+    vector<int> rowOrder=kahn(n,row); 
+    vector<int> colOrder=kahn(n,col); 
     
     if(!rowOrder.size() or !colOrder.size())
         return {};
     
     map<int,int> m;
     for(int i=0;i<rowOrder.size();i++)
-       m[rowOrder[i]]=i;     //is row pe ayunga mai map me store krwaliya
+       m[rowOrder[i]]=i;    
     
     vector<vector<int>> ans(n,vector<int>(n,0));
     
     for(int j=0;j<colOrder.size();j++)
     {
-        int ele=colOrder[j];  //ele kaunsa dalna
-        int rowToPlace=m[ele]; //kaunsi row pe dalna
-        ans[rowToPlace][j]=ele; //row,col wali jgh pe ele daldo
+        int ele=colOrder[j];  
+        int rowToPlace=m[ele]; 
+        ans[rowToPlace][j]=ele;
     }
     return ans;
 }
