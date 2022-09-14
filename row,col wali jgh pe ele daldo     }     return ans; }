@@ -1,0 +1,63 @@
+ vector<int> kahn(int n,vector<vector<int>> edge)
+    {
+        map<int,vector<int>> adj;
+        map<int,int> indegree;
+        for(auto i:edge)
+        {
+            adj[i[0]].push_back(i[1]);
+            indegree[i[1]]++;
+        }
+        
+        queue<int> q;
+        
+        for(int i=1;i<=n;i++)
+            if(indegree[i]==0)
+                q.push(i);
+        
+        vector<int> ans;
+        int visited=0;
+        while(!q.empty())
+        {
+            auto temp=q.front();
+            q.pop();
+            
+            ans.push_back(temp);
+            visited++;
+            
+            for(auto child:adj[temp])
+            {
+                indegree[child]--;
+                if(indegree[child]==0)  //if indegree 0 then push in queue
+                    q.push(child);
+            }
+        }
+        
+        if(visited!=n)  //cycle detected empty vector returned
+            return {};
+        
+        return ans;
+    }
+    
+    
+vector<vector<int>> buildMatrix(int n, vector<vector<int>>& row, vector<vector<int>>& col) {
+    
+    vector<int> rowOrder=kahn(n,row); //rowOrder ye btayega kaunsi row me kaunsa ele ayega
+    vector<int> colOrder=kahn(n,col); //colOrder ye btayega kaunsi col me kaunsa ele ayega
+    
+    if(!rowOrder.size() or !colOrder.size())
+        return {};
+    
+    map<int,int> m;
+    for(int i=0;i<rowOrder.size();i++)
+       m[rowOrder[i]]=i;     //is row pe ayunga mai map me store krwaliya
+    
+    vector<vector<int>> ans(n,vector<int>(n,0));
+    
+    for(int j=0;j<colOrder.size();j++)
+    {
+        int ele=colOrder[j];  //ele kaunsa dalna
+        int rowToPlace=m[ele]; //kaunsi row pe dalna
+        ans[rowToPlace][j]=ele; //row,col wali jgh pe ele daldo
+    }
+    return ans;
+}
